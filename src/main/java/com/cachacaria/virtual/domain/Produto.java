@@ -1,11 +1,20 @@
 package com.cachacaria.virtual.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Entity
-public class Produto {
+@Table(name = "produtos")
+public class Produto implements Serializable {
+
+    private static final long serialVersionUID = -9017650847571487336L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,8 +28,9 @@ public class Produto {
     @Size(min = 1, max = 100)
     private String descricao;
 
-    @OneToOne
-    @JoinColumn(name = "fk_fornecedor")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name="fk_fornecedor", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Fornecedor fornecedor;
 
     public Long getId() {

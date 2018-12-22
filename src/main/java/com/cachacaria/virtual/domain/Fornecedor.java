@@ -3,10 +3,16 @@ package com.cachacaria.virtual.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Fornecedor {
+@Table(name = "fornecedores")
+public class Fornecedor implements Serializable {
+
+    private static final long serialVersionUID = -2543425088717298236L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,16 +27,17 @@ public class Fornecedor {
     @Column(unique = true)
     @Size(min = 14, max = 14)
     private String cnpj;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<Produto> produto;
+    
+    @OneToMany
+    @JoinColumn(name="fk_fornecedor")
+    private Set<Produto> produtos = new HashSet<>();
 
     public Set<Produto> getProdutos() {
-        return produto;
+        return produtos;
     }
 
     public void setProdutos(Set<Produto> produtos) {
-        this.produto = produtos;
+        this.produtos = produtos;
     }
 
     public Long getId() {
