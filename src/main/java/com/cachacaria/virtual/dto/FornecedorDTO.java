@@ -25,11 +25,11 @@ public class FornecedorDTO {
         this.cnpj = cnpj;
     }
 
-    public Set<Produto> getProduto() {
+    public Set<Produto> getProdutos() {
         return produto;
     }
 
-    public void setProduto(Set<Produto> produto) {
+    public void setProdutos(Set<Produto> produto) {
         this.produto = produto;
     }
 }
