@@ -13,7 +13,7 @@ public interface FornecedorService {
 
     List<Fornecedor> findAll();
 
-    Optional<Fornecedor> save(Fornecedor fornecedo);
+    Fornecedor save(Fornecedor fornecedor);
 
-    Boolean delete(Long fornecedorId);
+    void delete(Long fornecedorId);
 }
