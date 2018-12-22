@@ -27,15 +27,7 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception
     {
-        http.csrf().disable().antMatcher("/**") // this will apply to the entire
-                // web server
-                .authorizeRequests()
-                .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security",
-                        "/swagger-ui.html", "/webjars/**", "/swagger-resources/configuration/ui", "/swagger-ui.html",
-                        "/swagger-resources/configuration/security")
-                .permitAll() // this
-                .antMatchers(HttpMethod.GET, "/**").access("#oauth2.hasScope('myapp.read')").anyRequest()
-                .authenticated();
+        http.csrf().disable();
 
     }
 }

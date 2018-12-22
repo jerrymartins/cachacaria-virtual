@@ -27,7 +27,7 @@ public class Fornecedor implements Serializable {
     @Column(unique = true)
     @Size(min = 14, max = 14)
     private String cnpj;
-    
+
     @OneToMany
     @JoinColumn(name="fk_fornecedor")
     private Set<Produto> produtos = new HashSet<>();

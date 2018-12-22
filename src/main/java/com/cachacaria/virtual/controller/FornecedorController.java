@@ -7,6 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.function.BiConsumer;
 
 @RestController
 @RequestMapping("fornecedor/")
@@ -22,6 +27,16 @@ public class FornecedorController {
     public @ResponseBody FornecedorDTO save (@Valid @RequestBody FornecedorDTO fornecedorDTO) {
         Fornecedor fornecedor = convertFornecedorDtoToFornecedor(fornecedorDTO);
         return convertFornecedorToFornecedorDto(service.save(fornecedor));
+    }
+
+    @GetMapping("/fornecedores")
+    public List<FornecedorDTO> getAll() {
+        List<Fornecedor> fornecedoresList = service.findAll();
+        List<FornecedorDTO> fornecedoresDTO = Arrays.asList(new FornecedorDTO());
+        fornecedoresList.forEach(f -> fornecedoresDTO.add(convertFornecedorToFornecedorDto(f)) );
+
+
+        return fornecedoresDTO;
     }
 
 
@@ -43,4 +58,7 @@ public class FornecedorController {
 
         return fornecedorDTO;
     }
+
+    BiConsumer<Integer,Fornecedor> biConsumer = (key, value) ->
+            convertFornecedorToFornecedorDto(value);
 }
