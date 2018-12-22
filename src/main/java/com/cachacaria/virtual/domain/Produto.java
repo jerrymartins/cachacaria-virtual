@@ -19,6 +19,10 @@ public class Produto {
     @Size(min = 1, max = 100)
     private String descricao;
 
+    @OneToOne
+    @JoinColumn(name = "fk_fornecedor")
+    private Fornecedor fornecedor;
+
     public Long getId() {
         return id;
     }
@@ -50,11 +54,6 @@ public class Produto {
     public void setFornecedor(Fornecedor fornecedor) {
         this.fornecedor = fornecedor;
     }
-
-    @OneToOne
-    @JoinColumn(name = "fk_fornecedor")
-    private Fornecedor fornecedor;
-
 
 }
 
