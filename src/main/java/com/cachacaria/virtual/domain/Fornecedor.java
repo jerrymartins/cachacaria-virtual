@@ -25,20 +25,8 @@ public class Fornecedor {
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Produto> produto;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Set<Produto> getProdutos() {
         return produto;
-    }
-
-    public Set<Produto> getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Set<Produto> produto) {
-        this.produto = produto;
     }
 
     public void setProdutos(Set<Produto> produtos) {
@@ -47,6 +35,10 @@ public class Fornecedor {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCnpj() {
