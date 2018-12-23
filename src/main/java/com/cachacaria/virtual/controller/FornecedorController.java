@@ -21,7 +21,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("fornecedor/")
+@RequestMapping("fornecedores/")
 @CrossOrigin(origins = "*")
 public class FornecedorController {
 
@@ -55,9 +55,14 @@ public class FornecedorController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(value = "/fornecedor/{fornecedorId}")
+    @GetMapping(value = "/fornecedor/id/{fornecedorId}")
     public @ResponseBody FornecedorDTO findById(	@PathVariable("fornecedorId") Long fornecedorId){
         return convertFornecedorToFornecedorDto(service.findById(fornecedorId).get());
+    }
+
+    @GetMapping(value = "/fornecedor/cnpj/{fornecedorCnpj}")
+    public @ResponseBody FornecedorDTO findByCnpj(	@PathVariable("fornecedorCnpj") String fornecedorCnpj){
+        return convertFornecedorToFornecedorDto(service.findByCnpj(fornecedorCnpj).get());
     }
 
     @DeleteMapping(value = "/fornecedor/{fornecedorId}")
@@ -65,9 +70,8 @@ public class FornecedorController {
         service.delete(fornecedorId);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping
     public ResponseEntity<Response<FornecedorDTO>> update(
-            @PathVariable("id") Long id,
             @Valid @RequestBody FornecedorDTO fornecedorDTO, BindingResult result) throws ParseException {
         Response<FornecedorDTO> response = new Response<FornecedorDTO>();
         validarFornecedor(fornecedorDTO, result);
