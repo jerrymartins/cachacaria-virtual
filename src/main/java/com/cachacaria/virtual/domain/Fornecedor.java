@@ -29,12 +29,9 @@ public class Fornecedor implements Serializable {
 
     @NotBlank
     @Column(unique = true)
-    @Size(min = 14, max = 14)
     private String cnpj;
 
-    @OneToMany(cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    @JoinColumn(name="fk_fornecedor")
+    @OneToMany(mappedBy="fornecedor", cascade= CascadeType.ALL, orphanRemoval=true)
     @Nullable
     private Set<Produto> produtos = new HashSet<>();
 
