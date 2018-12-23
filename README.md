@@ -1,1 +1,1 @@
-# cachacaria-virtual
+[![Build Status](https://travis-ci.org/jerrymartins/cachacaria-virtual.svg?branch=master)](https://travis-ci.org/jerrymartins/cachacaria-virtual)
