@@ -9,10 +9,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
+
+import java.text.ParseException;
+import java.util.Optional;
 
 
 @RestController
@@ -60,6 +65,24 @@ public class FornecedorController {
         service.delete(fornecedorId);
     }
 
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Response<FornecedorDTO>> update(
+            @PathVariable("id") Long id,
+            @Valid @RequestBody FornecedorDTO fornecedorDTO, BindingResult result) throws ParseException {
+        Response<FornecedorDTO> response = new Response<FornecedorDTO>();
+        validarFornecedor(fornecedorDTO, result);
+        Fornecedor fornecedor = convertFornecedorDtoToFornecedor(fornecedorDTO);
+
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        fornecedor = service.save(fornecedor);
+        response.setData(convertFornecedorToFornecedorDto(fornecedor));
+        return ResponseEntity.ok(response);
+    }
+
 
     private Fornecedor convertFornecedorDtoToFornecedor(FornecedorDTO fornecedorDto) {
         Fornecedor fornecedor = new Fornecedor();
@@ -75,6 +98,18 @@ public class FornecedorController {
         fornecedorDTO.setCnpj(fornecedor.getCnpj());
 
         return fornecedorDTO;
+    }
+
+    private void validarFornecedor(FornecedorDTO fornecedorDTO, BindingResult result) {
+        if (fornecedorDTO.getCnpj() == null) {
+            result.addError(new ObjectError("fornecedor", "Fornecedor não informado."));
+            return;
+        }
+
+        Optional<Fornecedor> fornecedor = service.findById(fornecedorDTO.getId());
+        if (!fornecedor.isPresent()) {
+            result.addError(new ObjectError("fornecedor", "Fornecedor não encontrado. ID inexistente."));
+        }
     }
 
 }

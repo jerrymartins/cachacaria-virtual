@@ -2,6 +2,7 @@ package com.cachacaria.virtual.domain;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -34,7 +35,7 @@ public class Fornecedor implements Serializable {
     @OneToMany(cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JoinColumn(name="fk_fornecedor")
-
+    @Nullable
     private Set<Produto> produtos = new HashSet<>();
 
     public Set<Produto> getProdutos() {
