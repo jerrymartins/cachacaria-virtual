@@ -8,6 +8,7 @@ import com.cachacaria.virtual.service.FornecedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -40,20 +41,18 @@ public class FornecedorController {
         return convertFornecedorToFornecedorDto(service.save(fornecedor));
     }
 
-    @GetMapping("/fornecedores")
-    public ResponseEntity<Response<Page<FornecedorDTO>>> getAll(
+    @RequestMapping(value = "/fornecedores", method = RequestMethod.GET)
+    Page<FornecedorDTO> todos(
             @RequestParam(value = "pag", defaultValue = "0") int pag,
             @RequestParam(value = "ord", defaultValue = "id") String ord,
-            @RequestParam(value = "dir", defaultValue = "DESC") String dir
-    ) {
-        Response<Page<FornecedorDTO>> response = new Response<Page<FornecedorDTO>>();
+            @RequestParam(value = "dir", defaultValue = "DESC") String dir,
+            Pageable pageable) {
         PageRequest pageRequest = new PageRequest(pag, qtdPorPagina, Sort.Direction.valueOf(dir), ord);
 
         Page<Fornecedor> fornecedores = service.findAll(pageRequest);
         Page<FornecedorDTO> fornecedoresDTO = fornecedores.map(f -> this.convertFornecedorToFornecedorDto(f));
 
-        response.setData(fornecedoresDTO);
-        return ResponseEntity.ok(response);
+        return fornecedoresDTO;
     }
 
     @GetMapping(value = "/fornecedor/id/{fornecedorId}")
