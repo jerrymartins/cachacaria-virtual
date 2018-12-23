@@ -47,8 +47,13 @@ public class FornecedorController {
     @GetMapping(value = "/fornecedor/id/{fornecedorId}")
     public ResponseEntity<Response<FornecedorDTO>> findById(	@PathVariable("fornecedorId") Long fornecedorId){
         Response<FornecedorDTO> response = new Response<FornecedorDTO>();
-        response.setData(convertFornecedorToFornecedorDto(service.findById(fornecedorId).get()));
-        return ResponseEntity.ok(response);
+
+        try {
+            response.setData(convertFornecedorToFornecedorDto(service.findById(fornecedorId).get()));
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
 
     }
 

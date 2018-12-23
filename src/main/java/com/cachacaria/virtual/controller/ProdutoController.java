@@ -2,6 +2,7 @@ package com.cachacaria.virtual.controller;
 
 import com.cachacaria.virtual.domain.Produto;
 import com.cachacaria.virtual.dto.ProdutoDTO;
+import com.cachacaria.virtual.response.Response;
 import com.cachacaria.virtual.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
@@ -31,10 +34,64 @@ public class ProdutoController {
     public ProdutoController(){}
 
     @PostMapping
-    public @ResponseBody
-    ProdutoDTO save (@Valid @RequestBody ProdutoDTO produtoDTO) {
+    public ResponseEntity<Response<ProdutoDTO>> save(@Valid @RequestBody ProdutoDTO produtoDTO) {
+        Response<ProdutoDTO> response = new Response<ProdutoDTO>();
         Produto produto = convertProdutoDtoToProduto(produtoDTO);
-        return convertProdutoToProdutoDto(service.save(produto));
+        produto = service.save(produto);
+        response.setData(convertProdutoToProdutoDto(produto));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/produto/id/{produtoId}")
+    public ResponseEntity<Response<ProdutoDTO>> findById(	@PathVariable("produtoId") Long produtoId){
+        Response<ProdutoDTO> response = new Response<ProdutoDTO>();
+
+        try {
+            response.setData(convertProdutoToProdutoDto(service.findById(produtoId).get()));
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
+
+    @GetMapping(value = "/produto/codProduto/{cod}")
+    public ResponseEntity<Response<ProdutoDTO>> findByCodProduto(	@PathVariable("cod") String cod){
+        Response<ProdutoDTO> response = new Response<ProdutoDTO>();
+        try {
+            response.setData(convertProdutoToProdutoDto(service.findByCodProduto(cod).get()));
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @DeleteMapping(value = "/produto/{produtoId}")
+    public ResponseEntity<Void> delete(@PathVariable("produtoId") Long produtoId){
+        Optional<Produto> produto = service.findById(produtoId);
+        if (!produto.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        service.delete(produtoId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<Response<ProdutoDTO>> update(@Valid @RequestBody ProdutoDTO produtoDTO, BindingResult result) {
+        Response<ProdutoDTO> response = new Response<ProdutoDTO>();
+        validarProduto(produtoDTO, result);
+        Produto produto = convertProdutoDtoToProduto(produtoDTO);
+
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        produto = service.save(produto);
+        response.setData(convertProdutoToProdutoDto(produto));
+
+        return ResponseEntity.ok(response);
     }
 
     @RequestMapping(value = "/produtos", method = RequestMethod.GET)
@@ -50,34 +107,6 @@ public class ProdutoController {
         Page<ProdutoDTO> produtosDTO = produtos.map(f -> this.convertProdutoToProdutoDto(f));
 
         return produtosDTO;
-
-    }
-
-    @GetMapping(value = "/produto/id/{produtoId}")
-    public @ResponseBody ProdutoDTO findById(	@PathVariable("produtoId") Long produtoId){
-        return convertProdutoToProdutoDto(service.findById(produtoId).get());
-    }
-
-
-
-    @GetMapping(value = "/produto/codProduto/{cod}")
-    public @ResponseBody ProdutoDTO findByCodProduto(	@PathVariable("cod") String cod){
-        return convertProdutoToProdutoDto(service.findByCodProduto(cod).get());
-    }
-
-    @DeleteMapping(value = "/produto/{produtoId}")
-    public @ResponseBody void delete(	@PathVariable("produtoId") Long produtoId){
-        service.delete(produtoId);
-    }
-
-    @PutMapping
-    public ProdutoDTO update(
-            @Valid @RequestBody ProdutoDTO produtoDTO, BindingResult result) throws ParseException {
-        validarProduto(produtoDTO, result);
-        Produto produto = convertProdutoDtoToProduto(produtoDTO);
-        produto = service.save(produto);
-        ProdutoDTO produtoAtualizado = convertProdutoToProdutoDto(produto);
-        return produtoAtualizado;
 
     }
 
