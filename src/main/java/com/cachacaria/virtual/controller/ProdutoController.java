@@ -2,7 +2,6 @@ package com.cachacaria.virtual.controller;
 
 import com.cachacaria.virtual.domain.Produto;
 import com.cachacaria.virtual.dto.ProdutoDTO;
-import com.cachacaria.virtual.response.Response;
 import com.cachacaria.virtual.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,16 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -42,7 +36,7 @@ public class ProdutoController {
         return convertProdutoToProdutoDto(service.save(produto));
     }
 
-    @RequestMapping(value = "/produtospp", method = RequestMethod.GET)
+    @RequestMapping(value = "/produtos", method = RequestMethod.GET)
     Page<ProdutoDTO> todos(
             @RequestParam(value = "pag", defaultValue = "0") int pag,
             @RequestParam(value = "ord", defaultValue = "id") String ord,
@@ -58,16 +52,12 @@ public class ProdutoController {
 
     }
 
+    @GetMapping(value = "/produto/id/{produtoId}")
+    public @ResponseBody ProdutoDTO findById(	@PathVariable("produtoId") Long produtoId){
+        return convertProdutoToProdutoDto(service.findById(produtoId).get());
+    }
 
 
-
-
-
-
-//    @GetMapping(value = "/produto/id/{produtoId}")
-//    public @ResponseBody ProdutoDTO findById(	@PathVariable("produtoId") Long produtoId){
-//        return convertProdutoToProdutoDto(service.findById(produtoId).get());
-//    }
 //
 //    @GetMapping(value = "/produto/codProduto/{cod}")
 //    public @ResponseBody ProdutoDTO findByCodProduto(	@PathVariable("cod") String cod){
