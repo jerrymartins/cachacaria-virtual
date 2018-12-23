@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -54,8 +55,23 @@ public class FornecedorController {
     @GetMapping(value = "/fornecedor/cnpj/{fornecedorCnpj}")
     public ResponseEntity<Response<FornecedorDTO>> findByCnpj(	@PathVariable("fornecedorCnpj") String fornecedorCnpj){
         Response<FornecedorDTO> response = new Response<FornecedorDTO>();
-        response.setData(convertFornecedorToFornecedorDto(service.findByCnpj(fornecedorCnpj).get()));
-        return ResponseEntity.ok(response);
+
+        try {
+            response.setData(convertFornecedorToFornecedorDto(service.findByCnpj(fornecedorCnpj).get()));
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @DeleteMapping(value = "/fornecedor/{fornecedorId}")
+    public ResponseEntity<Void> deleteById(@PathVariable("fornecedorId") Long fornecedorId) {
+        Optional<Fornecedor> fornecedor = service.findById(fornecedorId);
+        if (!fornecedor.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        service.delete(fornecedorId);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping
@@ -76,7 +92,8 @@ public class FornecedorController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(value = "/fornecedores")Page<FornecedorDTO> findAll(
+    @GetMapping(value = "/fornecedores")
+    public Page<FornecedorDTO> findAll(
             @RequestParam(value = "pag", defaultValue = "0") int pag,
             @RequestParam(value = "ord", defaultValue = "id") String ord,
             @RequestParam(value = "dir", defaultValue = "DESC") String dir) {
@@ -86,16 +103,6 @@ public class FornecedorController {
         Page<FornecedorDTO> fornecedoresDTO = fornecedores.map(f -> this.convertFornecedorToFornecedorDto(f));
 
         return fornecedoresDTO;
-    }
-
-    @DeleteMapping(value = "/fornecedor/{fornecedorId}")
-    public ResponseEntity<Void> deleteById(@PathVariable("fornecedorId") Long fornecedorId) {
-        Optional<Fornecedor> fornecedor = service.findById(fornecedorId);
-        if (!fornecedor.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        service.delete(fornecedorId);
-        return ResponseEntity.noContent().build();
     }
 
     private Fornecedor convertFornecedorDtoToFornecedor(FornecedorDTO fornecedorDto) {
