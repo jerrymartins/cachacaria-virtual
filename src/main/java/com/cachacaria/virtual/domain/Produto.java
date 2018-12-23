@@ -28,9 +28,12 @@ public class Produto implements Serializable {
     @Size(min = 1, max = 100)
     private String descricao;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="fk_fornecedor", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name="fk_fornecedor", nullable = false)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    private Fornecedor fornecedor;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     private Fornecedor fornecedor;
 
     public Long getId() {

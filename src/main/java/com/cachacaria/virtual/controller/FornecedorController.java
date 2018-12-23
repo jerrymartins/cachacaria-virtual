@@ -47,7 +47,7 @@ public class FornecedorController {
             @RequestParam(value = "dir", defaultValue = "DESC") String dir
     ) {
         Response<Page<FornecedorDTO>> response = new Response<Page<FornecedorDTO>>();
-        PageRequest pageRequest = new PageRequest(pag, 10, Sort.Direction.valueOf(dir), ord);
+        PageRequest pageRequest = new PageRequest(pag, qtdPorPagina, Sort.Direction.valueOf(dir), ord);
 
         Page<Fornecedor> fornecedores = service.findAll(pageRequest);
         Page<FornecedorDTO> fornecedoresDTO = fornecedores.map(f -> this.convertFornecedorToFornecedorDto(f));
@@ -95,7 +95,8 @@ public class FornecedorController {
 
         fornecedor.setNome(fornecedorDto.getNome());
         fornecedor.setCnpj(fornecedorDto.getCnpj());
-        fornecedor.setId(fornecedorDto.getId());
+        if (fornecedorDto.getId() != 0 && fornecedorDto.getId() != null)
+            fornecedor.setId(fornecedorDto.getId());
 
         return fornecedor;
     }

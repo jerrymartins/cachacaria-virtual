@@ -3,9 +3,18 @@ package com.cachacaria.virtual.dto;
 import com.cachacaria.virtual.domain.Fornecedor;
 
 public class ProdutoDTO {
+    private Long id;
     private String codProduto;
     private String descricao;
     private Fornecedor fornecedor;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getCodProduto() {
         return codProduto;
