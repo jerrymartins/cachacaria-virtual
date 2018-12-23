@@ -30,6 +30,7 @@ public class Produto implements Serializable {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Fornecedor fornecedor;
 
     public Long getId() {

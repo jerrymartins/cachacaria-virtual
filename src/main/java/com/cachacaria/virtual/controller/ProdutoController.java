@@ -14,6 +14,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
+import java.text.ParseException;
 import java.util.Optional;
 
 @RestController
@@ -37,7 +38,7 @@ public class ProdutoController {
     }
 
     @RequestMapping(value = "/produtos", method = RequestMethod.GET)
-    Page<ProdutoDTO> todos(
+    Page<ProdutoDTO> findAll(
             @RequestParam(value = "pag", defaultValue = "0") int pag,
             @RequestParam(value = "ord", defaultValue = "id") String ord,
             @RequestParam(value = "dir", defaultValue = "DESC") String dir,
@@ -58,35 +59,29 @@ public class ProdutoController {
     }
 
 
-//
-//    @GetMapping(value = "/produto/codProduto/{cod}")
-//    public @ResponseBody ProdutoDTO findByCodProduto(	@PathVariable("cod") String cod){
-//        return convertProdutoToProdutoDto(service.findByCodProduto(cod).get());
-//    }
-//
-//    @DeleteMapping(value = "/produto/{produtoId}")
-//    public @ResponseBody void delete(	@PathVariable("produtoId") Long produtoId){
-//        service.delete(produtoId);
-//    }
-//
-//    @PutMapping
-//    public ResponseEntity<Response<FornecedorDTO>> update(
-//            @Valid @RequestBody FornecedorDTO fornecedorDTO, BindingResult result) throws ParseException {
-//        Response<FornecedorDTO> response = new Response<FornecedorDTO>();
-//        validarFornecedor(fornecedorDTO, result);
-//        Fornecedor fornecedor = convertFornecedorDtoToFornecedor(fornecedorDTO);
-//
-//        if (result.hasErrors()) {
-//            result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
-//            return ResponseEntity.badRequest().body(response);
-//        }
-//
-//        fornecedor = service.save(fornecedor);
-//        response.setData(convertFornecedorToFornecedorDto(fornecedor));
-//        return ResponseEntity.ok(response);
-//    }
 
-    private void validarFornecedor(ProdutoDTO produtoDTO, BindingResult result) {
+    @GetMapping(value = "/produto/codProduto/{cod}")
+    public @ResponseBody ProdutoDTO findByCodProduto(	@PathVariable("cod") String cod){
+        return convertProdutoToProdutoDto(service.findByCodProduto(cod).get());
+    }
+
+    @DeleteMapping(value = "/produto/{produtoId}")
+    public @ResponseBody void delete(	@PathVariable("produtoId") Long produtoId){
+        service.delete(produtoId);
+    }
+
+    @PutMapping
+    public ProdutoDTO update(
+            @Valid @RequestBody ProdutoDTO produtoDTO, BindingResult result) throws ParseException {
+        validarProduto(produtoDTO, result);
+        Produto produto = convertProdutoDtoToProduto(produtoDTO);
+        produto = service.save(produto);
+        ProdutoDTO produtoAtualizado = convertProdutoToProdutoDto(produto);
+        return produtoAtualizado;
+
+    }
+
+    private void validarProduto(ProdutoDTO produtoDTO, BindingResult result) {
         if (produtoDTO.getCodProduto() == null) {
             result.addError(new ObjectError("produto", "Produto não informado."));
             return;

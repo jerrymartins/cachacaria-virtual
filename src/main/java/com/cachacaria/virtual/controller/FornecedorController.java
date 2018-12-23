@@ -42,7 +42,7 @@ public class FornecedorController {
     }
 
     @RequestMapping(value = "/fornecedores", method = RequestMethod.GET)
-    Page<FornecedorDTO> todos(
+    Page<FornecedorDTO> findAll(
             @RequestParam(value = "pag", defaultValue = "0") int pag,
             @RequestParam(value = "ord", defaultValue = "id") String ord,
             @RequestParam(value = "dir", defaultValue = "DESC") String dir,

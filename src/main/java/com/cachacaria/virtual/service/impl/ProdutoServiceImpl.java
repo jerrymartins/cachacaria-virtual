@@ -36,4 +36,8 @@ public class ProdutoServiceImpl implements ProdutoService {
     public Optional<Produto> findById(Long produtoId){
         return repository.findById(produtoId);
     }
+
+    public Optional<Produto> findByCodProduto(String codProduto) {
+        return repository.findByCodProduto(codProduto);
+    }
 }
