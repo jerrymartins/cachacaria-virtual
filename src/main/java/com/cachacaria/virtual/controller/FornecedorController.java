@@ -1,14 +1,12 @@
 package com.cachacaria.virtual.controller;
 
 import com.cachacaria.virtual.domain.Fornecedor;
-import com.cachacaria.virtual.domain.Produto;
 import com.cachacaria.virtual.dto.FornecedorDTO;
 import com.cachacaria.virtual.response.Response;
 import com.cachacaria.virtual.service.FornecedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -36,43 +34,33 @@ public class FornecedorController {
     public FornecedorController(){}
 
     @PostMapping
-    public @ResponseBody FornecedorDTO save (@Valid @RequestBody FornecedorDTO fornecedorDTO) {
+    public ResponseEntity<Response<FornecedorDTO>> save(
+            @Valid @RequestBody FornecedorDTO fornecedorDTO) throws ParseException {
+        Response<FornecedorDTO> response = new Response<FornecedorDTO>();
         Fornecedor fornecedor = convertFornecedorDtoToFornecedor(fornecedorDTO);
-        return convertFornecedorToFornecedorDto(service.save(fornecedor));
-    }
-
-    @RequestMapping(value = "/fornecedores", method = RequestMethod.GET)
-    Page<FornecedorDTO> findAll(
-            @RequestParam(value = "pag", defaultValue = "0") int pag,
-            @RequestParam(value = "ord", defaultValue = "id") String ord,
-            @RequestParam(value = "dir", defaultValue = "DESC") String dir,
-            Pageable pageable) {
-        PageRequest pageRequest = new PageRequest(pag, qtdPorPagina, Sort.Direction.valueOf(dir), ord);
-
-        Page<Fornecedor> fornecedores = service.findAll(pageRequest);
-        Page<FornecedorDTO> fornecedoresDTO = fornecedores.map(f -> this.convertFornecedorToFornecedorDto(f));
-
-        return fornecedoresDTO;
+        fornecedor = service.save(fornecedor);
+        response.setData(convertFornecedorToFornecedorDto(fornecedor));
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/fornecedor/id/{fornecedorId}")
-    public @ResponseBody FornecedorDTO findById(	@PathVariable("fornecedorId") Long fornecedorId){
-        return convertFornecedorToFornecedorDto(service.findById(fornecedorId).get());
+    public ResponseEntity<Response<FornecedorDTO>> findById(	@PathVariable("fornecedorId") Long fornecedorId){
+        Response<FornecedorDTO> response = new Response<FornecedorDTO>();
+        response.setData(convertFornecedorToFornecedorDto(service.findById(fornecedorId).get()));
+        return ResponseEntity.ok(response);
+
     }
 
     @GetMapping(value = "/fornecedor/cnpj/{fornecedorCnpj}")
-    public @ResponseBody FornecedorDTO findByCnpj(	@PathVariable("fornecedorCnpj") String fornecedorCnpj){
-        return convertFornecedorToFornecedorDto(service.findByCnpj(fornecedorCnpj).get());
-    }
-
-    @DeleteMapping(value = "/fornecedor/{fornecedorId}")
-    public @ResponseBody void delete(	@PathVariable("fornecedorId") Long fornecedorId){
-        service.delete(fornecedorId);
+    public ResponseEntity<Response<FornecedorDTO>> findByCnpj(	@PathVariable("fornecedorCnpj") String fornecedorCnpj){
+        Response<FornecedorDTO> response = new Response<FornecedorDTO>();
+        response.setData(convertFornecedorToFornecedorDto(service.findByCnpj(fornecedorCnpj).get()));
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping
     public ResponseEntity<Response<FornecedorDTO>> update(
-            @Valid @RequestBody FornecedorDTO fornecedorDTO, BindingResult result) throws ParseException {
+            @Valid @RequestBody FornecedorDTO fornecedorDTO, BindingResult result) {
         Response<FornecedorDTO> response = new Response<FornecedorDTO>();
         validarFornecedor(fornecedorDTO, result);
 
@@ -88,13 +76,34 @@ public class FornecedorController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping(value = "/fornecedores")Page<FornecedorDTO> findAll(
+            @RequestParam(value = "pag", defaultValue = "0") int pag,
+            @RequestParam(value = "ord", defaultValue = "id") String ord,
+            @RequestParam(value = "dir", defaultValue = "DESC") String dir) {
+        PageRequest pageRequest = new PageRequest(pag, qtdPorPagina, Sort.Direction.valueOf(dir), ord);
+
+        Page<Fornecedor> fornecedores = service.findAll(pageRequest);
+        Page<FornecedorDTO> fornecedoresDTO = fornecedores.map(f -> this.convertFornecedorToFornecedorDto(f));
+
+        return fornecedoresDTO;
+    }
+
+    @DeleteMapping(value = "/fornecedor/{fornecedorId}")
+    public ResponseEntity<Void> deleteById(@PathVariable("fornecedorId") Long fornecedorId) {
+        Optional<Fornecedor> fornecedor = service.findById(fornecedorId);
+        if (!fornecedor.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        service.delete(fornecedorId);
+        return ResponseEntity.noContent().build();
+    }
 
     private Fornecedor convertFornecedorDtoToFornecedor(FornecedorDTO fornecedorDto) {
         Fornecedor fornecedor = new Fornecedor();
 
         fornecedor.setNome(fornecedorDto.getNome());
         fornecedor.setCnpj(fornecedorDto.getCnpj());
-        if (fornecedorDto.getId() != 0 && fornecedorDto.getId() != null)
+        if (fornecedorDto.getId() != null && fornecedorDto.getId() != 0)
             fornecedor.setId(fornecedorDto.getId());
 
         return fornecedor;
