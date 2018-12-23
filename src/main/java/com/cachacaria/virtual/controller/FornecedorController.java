@@ -25,7 +25,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 public class FornecedorController {
 
-    @Value("${paginacao.qtd_por_pagina}")
+    @Value("${paginacao.fornecedor.qtd_por_pagina}")
     private int qtdPorPagina;
 
     @Autowired
