@@ -42,23 +42,6 @@ public class ProdutoController {
         return convertProdutoToProdutoDto(service.save(produto));
     }
 
-    @GetMapping("/produtos")
-    public ResponseEntity<Response<Page<ProdutoDTO>>> getAll(
-            @RequestParam(value = "pag", defaultValue = "0") int pag,
-            @RequestParam(value = "ord", defaultValue = "id") String ord,
-            @RequestParam(value = "dir", defaultValue = "DESC") String dir
-    ) {
-        Response<Page<ProdutoDTO>> response = new Response<Page<ProdutoDTO>>();
-        PageRequest pageRequest = new PageRequest(pag, qtdPorPagina, Sort.Direction.valueOf(dir), ord);
-
-        Page<Produto> fornecedores = service.findAll(pageRequest);
-        Page<ProdutoDTO> fornecedoresDTO = fornecedores.map(f -> this.convertProdutoToProdutoDto(f));
-
-        response.setData(fornecedoresDTO);
-        return ResponseEntity.ok(response);
-    }
-
-
     @RequestMapping(value = "/produtospp", method = RequestMethod.GET)
     Page<ProdutoDTO> todos(
             @RequestParam(value = "pag", defaultValue = "0") int pag,
@@ -68,10 +51,10 @@ public class ProdutoController {
 
         PageRequest pageRequest = new PageRequest(pag, qtdPorPagina, Sort.Direction.valueOf(dir), ord);
 
-        Page<Produto> fornecedores = service.findAll(pageRequest);
-        Page<ProdutoDTO> fornecedoresDTO = fornecedores.map(f -> this.convertProdutoToProdutoDto(f));
+        Page<Produto> produtos = service.findAll(pageRequest);
+        Page<ProdutoDTO> produtosDTO = produtos.map(f -> this.convertProdutoToProdutoDto(f));
 
-        return fornecedoresDTO;
+        return produtosDTO;
 
     }
 
