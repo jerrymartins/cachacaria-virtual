@@ -1,6 +1,7 @@
 package com.cachacaria.virtual.controller;
 
 import com.cachacaria.virtual.domain.Fornecedor;
+import com.cachacaria.virtual.domain.Produto;
 import com.cachacaria.virtual.dto.FornecedorDTO;
 import com.cachacaria.virtual.response.Response;
 import com.cachacaria.virtual.service.FornecedorService;
@@ -17,7 +18,7 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 
 import java.text.ParseException;
-import java.util.Optional;
+import java.util.*;
 
 
 @RestController
@@ -75,6 +76,7 @@ public class FornecedorController {
             @Valid @RequestBody FornecedorDTO fornecedorDTO, BindingResult result) throws ParseException {
         Response<FornecedorDTO> response = new Response<FornecedorDTO>();
         validarFornecedor(fornecedorDTO, result);
+
         Fornecedor fornecedor = convertFornecedorDtoToFornecedor(fornecedorDTO);
 
         if (result.hasErrors()) {
@@ -90,8 +92,10 @@ public class FornecedorController {
 
     private Fornecedor convertFornecedorDtoToFornecedor(FornecedorDTO fornecedorDto) {
         Fornecedor fornecedor = new Fornecedor();
+
         fornecedor.setNome(fornecedorDto.getNome());
         fornecedor.setCnpj(fornecedorDto.getCnpj());
+        fornecedor.setId(fornecedorDto.getId());
 
         return fornecedor;
     }
@@ -100,6 +104,7 @@ public class FornecedorController {
         FornecedorDTO fornecedorDTO = new FornecedorDTO();
         fornecedorDTO.setNome(fornecedor.getNome());
         fornecedorDTO.setCnpj(fornecedor.getCnpj());
+        fornecedorDTO.setId(fornecedor.getId());
 
         return fornecedorDTO;
     }
