@@ -1,5 +1,8 @@
 package com.cachacaria.virtual.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -28,8 +31,10 @@ public class Fornecedor implements Serializable {
     @Size(min = 14, max = 14)
     private String cnpj;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL,
+            orphanRemoval = true)
     @JoinColumn(name="fk_fornecedor")
+
     private Set<Produto> produtos = new HashSet<>();
 
     public Set<Produto> getProdutos() {

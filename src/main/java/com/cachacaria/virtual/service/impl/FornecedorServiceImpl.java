@@ -1,13 +1,13 @@
 package com.cachacaria.virtual.service.impl;
 
 import com.cachacaria.virtual.domain.Fornecedor;
-import com.cachacaria.virtual.dto.FornecedorDTO;
 import com.cachacaria.virtual.repository.FornecedorRepository;
 import com.cachacaria.virtual.service.FornecedorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,8 +20,8 @@ public class FornecedorServiceImpl implements FornecedorService {
         return repository.findByCnpj(cnpj);
     }
 
-    public List<Fornecedor> findAll() {
-        return repository.findAll();
+    public Page<Fornecedor> findAll(PageRequest pageRequest) {
+        return repository.findAll(pageRequest);
     }
 
     public Fornecedor save(Fornecedor produto){
@@ -31,5 +31,7 @@ public class FornecedorServiceImpl implements FornecedorService {
     public void delete(Long fornecedorId) {
         repository.deleteById(fornecedorId);
     }
+
+    public Optional<Fornecedor> findById(Long fornecedorId){ return repository.findById(fornecedorId); }
 
 }
