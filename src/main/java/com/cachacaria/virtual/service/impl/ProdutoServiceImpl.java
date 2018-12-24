@@ -1,6 +1,6 @@
 package com.cachacaria.virtual.service.impl;
 
-import com.cachacaria.virtual.domain.Produto;
+import com.cachacaria.virtual.entity.Produto;
 import com.cachacaria.virtual.repository.ProdutoRepository;
 import com.cachacaria.virtual.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

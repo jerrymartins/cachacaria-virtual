@@ -4,7 +4,8 @@ create table fornecedores
   id bigint auto_increment
     primary key,
   nome varchar(50) not null,
-  cnpj varchar(14)    null
+  cnpj varchar(14)    null,
+  email varchar(30) null
 );
 
 create table produtos

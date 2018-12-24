@@ -1,9 +1,8 @@
 package com.cachacaria.virtual.service;
-import com.cachacaria.virtual.domain.Produto;
+import com.cachacaria.virtual.entity.Produto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ProdutoService {

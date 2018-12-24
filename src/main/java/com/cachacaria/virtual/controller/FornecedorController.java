@@ -1,6 +1,6 @@
 package com.cachacaria.virtual.controller;
 
-import com.cachacaria.virtual.domain.Fornecedor;
+import com.cachacaria.virtual.entity.Fornecedor;
 import com.cachacaria.virtual.dto.FornecedorDTO;
 import com.cachacaria.virtual.response.Response;
 import com.cachacaria.virtual.service.FornecedorService;
@@ -115,6 +115,7 @@ public class FornecedorController {
 
         fornecedor.setNome(fornecedorDto.getNome());
         fornecedor.setCnpj(fornecedorDto.getCnpj());
+        fornecedor.setEmail(fornecedorDto.getEmail());
         if (fornecedorDto.getId() != null && fornecedorDto.getId() != 0)
             fornecedor.setId(fornecedorDto.getId());
 
@@ -125,6 +126,7 @@ public class FornecedorController {
         FornecedorDTO fornecedorDTO = new FornecedorDTO();
         fornecedorDTO.setNome(fornecedor.getNome());
         fornecedorDTO.setCnpj(fornecedor.getCnpj());
+        fornecedorDTO.setEmail(fornecedor.getEmail());
         fornecedorDTO.setId(fornecedor.getId());
 
         return fornecedorDTO;

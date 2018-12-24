@@ -1,7 +1,5 @@
-package com.cachacaria.virtual.domain;
+package com.cachacaria.virtual.entity;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -22,14 +20,16 @@ public class Fornecedor implements Serializable {
     private Long id;
 
     @NotBlank
-    @Column(unique = true)
+    @Column
     @Size(min = 1, max = 100)
     private String nome;
-
 
     @NotBlank
     @Column(unique = true)
     private String cnpj;
+
+    @Column
+    private String email;
 
     @OneToMany(mappedBy="fornecedor", cascade= CascadeType.ALL, orphanRemoval=true)
     @Nullable
@@ -65,5 +65,13 @@ public class Fornecedor implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

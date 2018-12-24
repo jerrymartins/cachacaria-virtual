@@ -1,6 +1,6 @@
 package com.cachacaria.virtual.service;
 
-import com.cachacaria.virtual.domain.Fornecedor;
+import com.cachacaria.virtual.entity.Fornecedor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 

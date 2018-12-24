@@ -1,6 +1,6 @@
 package com.cachacaria.virtual.dto;
 
-import com.cachacaria.virtual.domain.Fornecedor;
+import com.cachacaria.virtual.entity.Fornecedor;
 
 public class ProdutoDTO {
     private Long id;

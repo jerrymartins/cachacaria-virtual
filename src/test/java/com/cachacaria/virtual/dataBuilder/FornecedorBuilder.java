@@ -1,6 +1,6 @@
 package com.cachacaria.virtual.dataBuilder;
 
-import com.cachacaria.virtual.domain.Fornecedor;
+import com.cachacaria.virtual.entity.Fornecedor;
 
 import java.lang.Long;
 import java.lang.String;

@@ -1,6 +1,6 @@
 package com.cachacaria.virtual.service.impl;
 
-import com.cachacaria.virtual.domain.Fornecedor;
+import com.cachacaria.virtual.entity.Fornecedor;
 import com.cachacaria.virtual.repository.FornecedorRepository;
 import com.cachacaria.virtual.service.FornecedorService;
 import org.springframework.beans.factory.annotation.Autowired;

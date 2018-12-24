@@ -1,4 +1,4 @@
-package com.cachacaria.virtual.domain;
+package com.cachacaria.virtual.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;

@@ -1,10 +1,10 @@
-insert into fornecedores(nome, cnpj) values
-("Catuaba Ltd", "44588796558"),
-("Ambev","45874569874569"),
-("Coca-Cola","45632147896541"),
-("Skol Ltd","45874632145878"),
-("Rio Negro Ltd","45879655574545"),
-("Corona Ltda","88855566998742");
+insert into fornecedores(nome, cnpj, email) values
+("Catuaba Ltd", "44588796558", "comercial@catuaba.com"),
+("Ambev","45874569874569", "vendas@ambev.com.br"),
+("Coca-Cola","45632147896541", "comercial@coca-cola.com"),
+("Skol Ltd","45874632145878", "contato@skol.com"),
+("Rio Negro Ltd","45879655574545", "vendas@rionegro.com"),
+("Corona Ltda","88855566998742", "vendas@corona.com");
 
 insert into produtos(cod_produto, descricao, fornecedor_id) values
 ("ksp89", "Longneek Heineken", 1),

@@ -1,6 +1,6 @@
 package com.cachacaria.virtual.controller;
 
-import com.cachacaria.virtual.domain.Produto;
+import com.cachacaria.virtual.entity.Produto;
 import com.cachacaria.virtual.dto.ProdutoDTO;
 import com.cachacaria.virtual.response.Response;
 import com.cachacaria.virtual.service.ProdutoService;
@@ -17,7 +17,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
-import java.text.ParseException;
 import java.util.Optional;
 
 @RestController

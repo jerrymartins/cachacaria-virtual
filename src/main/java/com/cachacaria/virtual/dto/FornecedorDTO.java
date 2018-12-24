@@ -4,6 +4,7 @@ public class FornecedorDTO {
     private Long id;
     private String nome;
     private String cnpj;
+    private String email;
 
     public Long getId() {
         return id;
@@ -27,6 +28,14 @@ public class FornecedorDTO {
 
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }
