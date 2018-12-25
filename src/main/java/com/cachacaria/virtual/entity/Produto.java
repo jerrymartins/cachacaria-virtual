@@ -28,6 +28,10 @@ public class Produto implements Serializable {
     @Size(min = 1, max = 100)
     private String descricao;
 
+    @Column
+    @NotBlank
+    private Float preco;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -59,6 +63,15 @@ public class Produto implements Serializable {
 
     public Fornecedor getFornecedor() {
         return fornecedor;
+    }
+
+
+    public Float getPreco() {
+        return preco;
+    }
+
+    public void setPreco(Float preco) {
+        this.preco = preco;
     }
 
     public void setFornecedor(Fornecedor fornecedor) {

@@ -6,6 +6,7 @@ public class ProdutoDTO {
     private Long id;
     private String codProduto;
     private String descricao;
+    private Float preco;
     private Fornecedor fornecedor;
 
     public Long getId() {
@@ -34,6 +35,14 @@ public class ProdutoDTO {
 
     public Fornecedor getFornecedor() {
         return fornecedor;
+    }
+
+    public Float getPreco() {
+        return preco;
+    }
+
+    public void setPreco(Float preco) {
+        this.preco = preco;
     }
 
     public void setFornecedor(Fornecedor fornecedor) {

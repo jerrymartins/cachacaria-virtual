@@ -34,7 +34,7 @@ public class FornecedorController {
 
     public FornecedorController(){}
 
-    @PostMapping
+    @PostMapping(value = "/fornecedor")
     public ResponseEntity<Response<FornecedorDTO>> save(
             @Valid @RequestBody FornecedorDTO fornecedorDTO) throws ParseException {
         Response<FornecedorDTO> response = new Response<FornecedorDTO>();

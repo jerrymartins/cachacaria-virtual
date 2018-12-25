@@ -14,6 +14,7 @@ create table produtos
     primary key,
   cod_produto varchar(30),
   descricao varchar(50) not null,
+  preco float,
   fornecedor_id bigint not null,
   constraint produto_fornecedor_id_fk
     foreign key (fornecedor_id) references fornecedores (id)

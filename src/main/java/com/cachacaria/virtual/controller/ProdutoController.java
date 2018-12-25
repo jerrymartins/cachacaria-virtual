@@ -32,7 +32,7 @@ public class ProdutoController {
 
     public ProdutoController(){}
 
-    @PostMapping
+    @PostMapping(value = "produto")
     public ResponseEntity<Response<ProdutoDTO>> save(@Valid @RequestBody ProdutoDTO produtoDTO) {
         Response<ProdutoDTO> response = new Response<ProdutoDTO>();
         Produto produto = convertProdutoDtoToProduto(produtoDTO);
@@ -97,8 +97,7 @@ public class ProdutoController {
     Page<ProdutoDTO> findAll(
             @RequestParam(value = "pag", defaultValue = "0") int pag,
             @RequestParam(value = "ord", defaultValue = "id") String ord,
-            @RequestParam(value = "dir", defaultValue = "DESC") String dir,
-            Pageable pageable) {
+            @RequestParam(value = "dir", defaultValue = "DESC") String dir) {
 
         PageRequest pageRequest = new PageRequest(pag, qtdPorPagina, Sort.Direction.valueOf(dir), ord);
 
@@ -126,6 +125,7 @@ public class ProdutoController {
         produto.setCodProduto(produtoDTO.getCodProduto());
         produto.setDescricao(produtoDTO.getDescricao());
         produto.setFornecedor(produtoDTO.getFornecedor());
+        produto.setPreco(produtoDTO.getPreco());
         produto.setId(produtoDTO.getId());
 
         return produto;
@@ -136,6 +136,7 @@ public class ProdutoController {
         produtoDto.setCodProduto(produto.getCodProduto());
         produtoDto.setDescricao(produto.getDescricao());
         produtoDto.setFornecedor(produto.getFornecedor());
+        produtoDto.setPreco(produto.getPreco());
         produtoDto.setId(produto.getId());
 
         return produtoDto;
