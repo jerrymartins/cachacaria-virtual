@@ -29,7 +29,6 @@ public class Produto implements Serializable {
     private String descricao;
 
     @Column
-    @NotBlank
     private Float preco;
 
     @JsonIgnore

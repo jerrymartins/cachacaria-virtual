@@ -116,6 +116,7 @@ public class FornecedorController {
         fornecedor.setNome(fornecedorDto.getNome());
         fornecedor.setCnpj(fornecedorDto.getCnpj());
         fornecedor.setEmail(fornecedorDto.getEmail());
+        fornecedor.setProdutos(fornecedorDto.getProdutos());
         if (fornecedorDto.getId() != null && fornecedorDto.getId() != 0)
             fornecedor.setId(fornecedorDto.getId());
 
@@ -128,6 +129,7 @@ public class FornecedorController {
         fornecedorDTO.setCnpj(fornecedor.getCnpj());
         fornecedorDTO.setEmail(fornecedor.getEmail());
         fornecedorDTO.setId(fornecedor.getId());
+        fornecedorDTO.setProdutos(fornecedor.getProdutos());
 
         return fornecedorDTO;
     }

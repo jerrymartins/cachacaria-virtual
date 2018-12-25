@@ -1,10 +1,15 @@
 package com.cachacaria.virtual.dto;
 
+import com.cachacaria.virtual.entity.Produto;
+
+import java.util.Set;
+
 public class FornecedorDTO {
     private Long id;
     private String nome;
     private String cnpj;
     private String email;
+    private Set<Produto> produtos;
 
     public Long getId() {
         return id;
@@ -38,6 +43,13 @@ public class FornecedorDTO {
         this.email = email;
     }
 
+    public Set<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(Set<Produto> produtos) {
+        this.produtos = produtos;
+    }
 }
 
 
