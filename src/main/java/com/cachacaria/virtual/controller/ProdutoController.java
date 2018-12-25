@@ -108,6 +108,21 @@ public class ProdutoController {
 
     }
 
+    @RequestMapping(value = "/produtos/fornecedorId/{fornecedorId}", method = RequestMethod.GET)
+    Page<ProdutoDTO> findAllByFornecedor(@PathVariable("fornecedorId") Long fornecedorId,
+            @RequestParam(value = "pag", defaultValue = "0") int pag,
+            @RequestParam(value = "ord", defaultValue = "id") String ord,
+            @RequestParam(value = "dir", defaultValue = "DESC") String dir) {
+
+        PageRequest pageRequest = new PageRequest(pag, qtdPorPagina, Sort.Direction.valueOf(dir), ord);
+
+        Page<Produto> produtos = service.findAllByFornecedor(fornecedorId, pageRequest);
+        Page<ProdutoDTO> produtosDTO = produtos.map(f -> this.convertProdutoToProdutoDto(f));
+
+        return produtosDTO;
+
+    }
+
     private void validarProduto(ProdutoDTO produtoDTO, BindingResult result) {
         if (produtoDTO.getCodProduto() == null) {
             result.addError(new ObjectError("produto", "Produto não informado."));

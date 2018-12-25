@@ -16,5 +16,17 @@ insert into produtos(cod_produto, descricao, preco, fornecedor_id) values
 ("dew75", "Red Label", 65.70, 5),
 ("lyt79", "Longneeek Priscilla", 7.50, 1),
 ("pok78", "Longneek Itaipava", 4.50, 2),
+("pok77", "Longneek Itaipava", 4.50, 6),
+("pok78", "Litrão Itaipava", 4.50, 6),
+("pok79", "Barril Itaipava", 4.50, 6),
+("pok80", "Grade Itaipava", 4.50, 6),
+("pok81", "Caixinha Itaipava", 4.50, 6),
+("pok82", "Latinha Itaipava", 4.50, 6),
+("pok83", "Caneca", 4.50, 6),
+("pok84", "Energético", 4.50, 6),
+("pok85", "Skarlof", 4.50, 6),
+("pok86", "BlackStone", 4.50, 6),
+("pok87", "BlackLabel", 4.50, 6),
+("pok88", "Alcatrão", 4.50, 6),
 ("klo30", "Longneek Corona", 8.00, 1);
 

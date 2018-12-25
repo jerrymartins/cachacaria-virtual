@@ -15,6 +15,8 @@ public interface ProdutoService {
 
         Page<Produto> findAll(PageRequest pageRequest);
 
+        Page<Produto> findAllByFornecedor(Long fornecedorId, PageRequest pageRequest);
+
         Optional<Produto> findById(Long ProdutoId);
 
         Optional<Produto> findByCodProduto(String codProduto);

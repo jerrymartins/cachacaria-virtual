@@ -28,6 +28,10 @@ public class ProdutoServiceImpl implements ProdutoService {
         return repository.findAll(pageRequest);
     }
 
+    public Page<Produto> findAllByFornecedor(Long fornecedorid, PageRequest pageRequest) {
+        return repository.findByFornecedorId(fornecedorid, pageRequest);
+    }
+
     public Optional<Produto> findByCod(String cod) {
         return repository.findByCodProduto(cod);
     }
