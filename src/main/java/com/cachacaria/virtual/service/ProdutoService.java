@@ -21,4 +21,6 @@ public interface ProdutoService {
 
         Optional<Produto> findByCodProduto(String codProduto);
 
+        Long countByFornecedor(Long idFornecedor);
+
 }

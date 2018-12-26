@@ -21,4 +21,12 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
             value = "SELECT * FROM produtos p WHERE p.fornecedor_id = ?1",
             nativeQuery = true)
     Page<Produto> findByFornecedorId(Long fornecedorId, PageRequest pageRequest);
+
+    @Transactional(readOnly = true)
+    @Query(
+            value = "SELECT count(p.fornecedor_id) FROM produtos p WHERE p.fornecedor_id = ?1",
+            nativeQuery = true)
+    Long countByFornecedorId(Long fornecedorId);
+
+
 }

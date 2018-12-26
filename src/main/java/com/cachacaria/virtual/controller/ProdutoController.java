@@ -1,8 +1,10 @@
 package com.cachacaria.virtual.controller;
 
+import com.cachacaria.virtual.entity.Fornecedor;
 import com.cachacaria.virtual.entity.Produto;
 import com.cachacaria.virtual.dto.ProdutoDTO;
 import com.cachacaria.virtual.response.Response;
+import com.cachacaria.virtual.service.FornecedorService;
 import com.cachacaria.virtual.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,12 +32,21 @@ public class ProdutoController {
     @Autowired
     private ProdutoService service;
 
+    @Autowired
+    private FornecedorService fornecedorService;
+
     public ProdutoController(){}
 
-    @PostMapping(value = "produto")
-    public ResponseEntity<Response<ProdutoDTO>> save(@Valid @RequestBody ProdutoDTO produtoDTO) {
+    @PostMapping(value = "produto/fornecedorId/{fornecedorId}")
+    public ResponseEntity<Response<ProdutoDTO>> save(
+            @PathVariable("fornecedorId") Long fornecedorId,
+            @Valid @RequestBody ProdutoDTO produtoDTO) {
+
         Response<ProdutoDTO> response = new Response<ProdutoDTO>();
         Produto produto = convertProdutoDtoToProduto(produtoDTO);
+
+        Optional<Fornecedor> fornecedor = fornecedorService.findById(fornecedorId);
+        produto.setFornecedor(fornecedor.get());
         produto = service.save(produto);
         response.setData(convertProdutoToProdutoDto(produto));
         return ResponseEntity.ok(response);
@@ -121,6 +132,11 @@ public class ProdutoController {
 
         return produtosDTO;
 
+    }
+
+    @RequestMapping(value = "/produtos/count/fornecedorId/{fornecedorId}", method = RequestMethod.GET)
+    Long countByFornecedor(@PathVariable("fornecedorId") Long fornecedorId) {
+        return service.countByFornecedor(fornecedorId);
     }
 
     private void validarProduto(ProdutoDTO produtoDTO, BindingResult result) {

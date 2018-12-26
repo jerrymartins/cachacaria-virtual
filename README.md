@@ -21,10 +21,10 @@ Como utilizar:
    2. Maven
    3. Junit
    4. Mockito
-   5. Swagger
+   5. Swagger - http://localhost:8080/cachacaria-api/swagger-ui.html
    
  - FRONT
-   1. Angular 7
+   1. Angular 6
    2. Materialize css
    3. Sass
    4. Yarn 

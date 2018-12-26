@@ -43,4 +43,8 @@ public class ProdutoServiceImpl implements ProdutoService {
     public Optional<Produto> findByCodProduto(String codProduto) {
         return repository.findByCodProduto(codProduto);
     }
+
+    public Long countByFornecedor(Long idFornecedor){
+        return this.repository.countByFornecedorId(idFornecedor);
+    }
 }
