@@ -1,6 +1,7 @@
 package com.cachacaria.virtual.service.impl;
 
 import com.cachacaria.virtual.entity.Fornecedor;
+import com.cachacaria.virtual.entity.Produto;
 import com.cachacaria.virtual.repository.FornecedorRepository;
 import com.cachacaria.virtual.service.FornecedorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class FornecedorServiceImpl implements FornecedorService {
@@ -20,8 +23,8 @@ public class FornecedorServiceImpl implements FornecedorService {
         return repository.findByCnpj(cnpj);
     }
 
-    public Page<Fornecedor> findAll(PageRequest pageRequest) {
-        return repository.findAll(pageRequest);
+    public List<Fornecedor> findAll() {
+        return repository.findAll();
     }
 
     public Fornecedor save(Fornecedor produto){
@@ -34,4 +37,12 @@ public class FornecedorServiceImpl implements FornecedorService {
 
     public Optional<Fornecedor> findById(Long fornecedorId){ return repository.findById(fornecedorId); }
 
+    public Fornecedor createObjectFornecedor(String nome, String cnpj, String email) {
+        Fornecedor fornecedor = new Fornecedor();
+        fornecedor.setNome(nome);
+        fornecedor.setCnpj(cnpj);
+        fornecedor.setEmail(email);
+
+        return fornecedor;
+    }
 }

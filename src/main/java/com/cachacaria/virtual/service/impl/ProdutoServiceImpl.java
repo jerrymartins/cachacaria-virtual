@@ -1,5 +1,6 @@
 package com.cachacaria.virtual.service.impl;
 
+import com.cachacaria.virtual.entity.Fornecedor;
 import com.cachacaria.virtual.entity.Produto;
 import com.cachacaria.virtual.repository.ProdutoRepository;
 import com.cachacaria.virtual.service.ProdutoService;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,12 +26,12 @@ public class ProdutoServiceImpl implements ProdutoService {
         repository.deleteById(fornecedorId);
     }
 
-    public Page<Produto> findAll(PageRequest pageRequest) {
-        return repository.findAll(pageRequest);
+    public List<Produto> findAll() {
+        return repository.findAll();
     }
 
-    public Page<Produto> findAllByFornecedor(Long fornecedorid, PageRequest pageRequest) {
-        return repository.findByFornecedorId(fornecedorid, pageRequest);
+    public List<Produto> findAllByFornecedor(Long fornecedorid) {
+        return repository.findByFornecedorId(fornecedorid);
     }
 
     public Optional<Produto> findByCod(String cod) {
@@ -46,5 +48,15 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     public Long countByFornecedor(Long idFornecedor){
         return this.repository.countByFornecedorId(idFornecedor);
+    }
+
+    public Produto createObjectProduto(String codProduto, String descricao, Float preco, Fornecedor fornecedor) {
+        Produto produto = new Produto();
+        produto.setCodProduto(codProduto);
+        produto.setDescricao(descricao);
+        produto.setPreco(preco);
+        produto.setFornecedor(fornecedor);
+
+        return produto;
     }
 }

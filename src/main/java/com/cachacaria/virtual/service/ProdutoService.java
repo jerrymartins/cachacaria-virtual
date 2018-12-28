@@ -1,8 +1,10 @@
 package com.cachacaria.virtual.service;
+import com.cachacaria.virtual.entity.Fornecedor;
 import com.cachacaria.virtual.entity.Produto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ProdutoService {
@@ -13,9 +15,9 @@ public interface ProdutoService {
 
         Optional<Produto> findByCod(String cod);
 
-        Page<Produto> findAll(PageRequest pageRequest);
+        List<Produto> findAll();
 
-        Page<Produto> findAllByFornecedor(Long fornecedorId, PageRequest pageRequest);
+        List<Produto> findAllByFornecedor(Long fornecedorId);
 
         Optional<Produto> findById(Long ProdutoId);
 
@@ -23,4 +25,7 @@ public interface ProdutoService {
 
         Long countByFornecedor(Long idFornecedor);
 
+        Produto createObjectProduto(String codProduto, String descricao, Float preco, Fornecedor fornecedor);
+
 }
+

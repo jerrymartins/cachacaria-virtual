@@ -1,0 +1,30 @@
+schema {
+   query: Query
+}
+
+type Fornecedor {
+  id: ID!
+  nome: String!
+  cnpj: String!
+  email: String!
+
+}
+
+type Produto {
+  id: ID!
+  codProduto: String!
+  descricao: String!
+  preco: Float!
+  fornecedor: Fornecedor!
+
+}
+
+type Query {
+  getAllFornecedores: [Fornecedor]!
+  getAllProdutos: [Produto]!
+}
+
+type Mutation {
+    newFornecedor(nome: String!, cnpj: String!, email: String!) : Fornecedor
+    newProduto(codProduto: String!, descricao: String!, preco: Float!, idFornecedor: Long!): Produto
+}

@@ -6,8 +6,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Table(name = "fornecedores")
@@ -30,18 +30,6 @@ public class Fornecedor implements Serializable {
 
     @Column
     private String email;
-
-    @OneToMany(mappedBy="fornecedor", cascade= CascadeType.ALL, orphanRemoval=true)
-    @Nullable
-    private Set<Produto> produtos = new HashSet<>();
-
-    public Set<Produto> getProdutos() {
-        return produtos;
-    }
-
-    public void setProdutos(Set<Produto> produtos) {
-        this.produtos = produtos;
-    }
 
     public Long getId() {
         return id;

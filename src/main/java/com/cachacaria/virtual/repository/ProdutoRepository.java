@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,7 +21,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
     @Query(
             value = "SELECT * FROM produtos p WHERE p.fornecedor_id = ?1",
             nativeQuery = true)
-    Page<Produto> findByFornecedorId(Long fornecedorId, PageRequest pageRequest);
+    List<Produto> findByFornecedorId(Long fornecedorId);
 
     @Transactional(readOnly = true)
     @Query(

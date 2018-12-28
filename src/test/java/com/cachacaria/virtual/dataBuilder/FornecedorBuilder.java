@@ -4,6 +4,7 @@ import com.cachacaria.virtual.entity.Fornecedor;
 
 import java.lang.Long;
 import java.lang.String;
+import java.util.List;
 import java.util.Set;
 
 
@@ -25,7 +26,6 @@ public class FornecedorBuilder {
         elemento.setId(0L);
         elemento.setNome("");
         elemento.setCnpj("");
-        elemento.setProdutos(null);
     }
 
     public FornecedorBuilder comId(Long param) {
@@ -40,11 +40,6 @@ public class FornecedorBuilder {
 
     public FornecedorBuilder comCnpj(String param) {
         elemento.setCnpj(param);
-        return this;
-    }
-
-    public FornecedorBuilder comProdutos(Set param) {
-        elemento.setProdutos(param);
         return this;
     }
 
