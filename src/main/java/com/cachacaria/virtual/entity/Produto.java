@@ -1,8 +1,12 @@
 package com.cachacaria.virtual.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,6 +15,9 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "produtos")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Produto implements Serializable {
 
     private static final long serialVersionUID = -9017650847571487336L;
@@ -35,48 +42,6 @@ public class Produto implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Fornecedor fornecedor;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCodProduto() {
-        return codProduto;
-    }
-
-    public void setCodProduto(String codProduto) {
-        this.codProduto = codProduto;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public Fornecedor getFornecedor() {
-        return fornecedor;
-    }
-
-
-    public Float getPreco() {
-        return preco;
-    }
-
-    public void setPreco(Float preco) {
-        this.preco = preco;
-    }
-
-    public void setFornecedor(Fornecedor fornecedor) {
-        this.fornecedor = fornecedor;
-    }
-
 }
 
 
