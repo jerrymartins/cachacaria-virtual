@@ -1,5 +1,8 @@
 package com.cachacaria.virtual.controller;
 
+import com.cachacaria.virtual.api.client.CepService;
+import com.cachacaria.virtual.api.client.impl.CepServiceRest;
+import com.cachacaria.virtual.api.data.CepResponse;
 import com.cachacaria.virtual.entity.Fornecedor;
 import com.cachacaria.virtual.dto.FornecedorDTO;
 import com.cachacaria.virtual.response.Response;
