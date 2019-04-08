@@ -6,6 +6,7 @@ import com.cachacaria.virtual.dto.ProdutoDTO;
 import com.cachacaria.virtual.response.Response;
 import com.cachacaria.virtual.service.FornecedorService;
 import com.cachacaria.virtual.service.ProdutoService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,9 @@ public class ProdutoController {
     @Autowired
     private FornecedorService fornecedorService;
 
+
+    private ModelMapper modelMapper = new ModelMapper();
+
     public ProdutoController(){}
 
     @PostMapping(value = "produto/fornecedorId/{fornecedorId}")
@@ -43,12 +47,12 @@ public class ProdutoController {
             @Valid @RequestBody ProdutoDTO produtoDTO) {
 
         Response<ProdutoDTO> response = new Response<ProdutoDTO>();
-        Produto produto = convertProdutoDtoToProduto(produtoDTO);
+        Produto produto = modelMapper.map(produtoDTO,Produto.class);
 
         Optional<Fornecedor> fornecedor = fornecedorService.findById(fornecedorId);
         produto.setFornecedor(fornecedor.get());
         produto = service.save(produto);
-        response.setData(convertProdutoToProdutoDto(produto));
+        response.setData(modelMapper.map(produto, ProdutoDTO.class));
         return ResponseEntity.ok(response);
     }
 
@@ -57,7 +61,7 @@ public class ProdutoController {
         Response<ProdutoDTO> response = new Response<ProdutoDTO>();
 
         try {
-            response.setData(convertProdutoToProdutoDto(service.findById(produtoId).get()));
+            response.setData(modelMapper.map(service.findById(produtoId).get(), ProdutoDTO.class));
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -70,7 +74,7 @@ public class ProdutoController {
     public ResponseEntity<Response<ProdutoDTO>> findByCodProduto(	@PathVariable("cod") String cod){
         Response<ProdutoDTO> response = new Response<ProdutoDTO>();
         try {
-            response.setData(convertProdutoToProdutoDto(service.findByCodProduto(cod).get()));
+            response.setData(modelMapper.map(service.findByCodProduto(cod).get(), ProdutoDTO.class));
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -90,8 +94,8 @@ public class ProdutoController {
     @PutMapping
     public ResponseEntity<Response<ProdutoDTO>> update(@Valid @RequestBody ProdutoDTO produtoDTO, BindingResult result) {
         Response<ProdutoDTO> response = new Response<ProdutoDTO>();
-        validarProduto(produtoDTO, result);
-        Produto produto = convertProdutoDtoToProduto(produtoDTO);
+        service.validarProduto(produtoDTO, result);
+        Produto produto = modelMapper.map(produtoDTO, Produto.class);
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
@@ -99,7 +103,7 @@ public class ProdutoController {
         }
 
         produto = service.save(produto);
-        response.setData(convertProdutoToProdutoDto(produto));
+        response.setData( modelMapper.map(produto, ProdutoDTO.class));
 
         return ResponseEntity.ok(response);
     }
@@ -113,7 +117,7 @@ public class ProdutoController {
         PageRequest pageRequest = new PageRequest(pag, qtdPorPagina, Sort.Direction.valueOf(dir), ord);
 
         Page<Produto> produtos = service.findAll(pageRequest);
-        Page<ProdutoDTO> produtosDTO = produtos.map(f -> this.convertProdutoToProdutoDto(f));
+        Page<ProdutoDTO> produtosDTO = produtos.map(f -> modelMapper.map(f, ProdutoDTO.class));
 
         return produtosDTO;
 
@@ -128,7 +132,7 @@ public class ProdutoController {
         PageRequest pageRequest = new PageRequest(pag, qtdPorPagina, Sort.Direction.valueOf(dir), ord);
 
         Page<Produto> produtos = service.findAllByFornecedor(fornecedorId, pageRequest);
-        Page<ProdutoDTO> produtosDTO = produtos.map(f -> this.convertProdutoToProdutoDto(f));
+        Page<ProdutoDTO> produtosDTO = produtos.map(f -> modelMapper.map(f, ProdutoDTO.class));
 
         return produtosDTO;
 
@@ -139,38 +143,5 @@ public class ProdutoController {
         return service.countByFornecedor(fornecedorId);
     }
 
-    private void validarProduto(ProdutoDTO produtoDTO, BindingResult result) {
-        if (produtoDTO.getCodProduto() == null) {
-            result.addError(new ObjectError("produto", "Produto não informado."));
-            return;
-        }
-
-        Optional<Produto> produto = service.findById(produtoDTO.getId());
-        if (!produto.isPresent()) {
-            result.addError(new ObjectError("produto", "Produto não encontrado. ID inexistente."));
-        }
-    }
-
-    private Produto convertProdutoDtoToProduto(ProdutoDTO produtoDTO) {
-        Produto produto = new Produto();
-        produto.setCodProduto(produtoDTO.getCodProduto());
-        produto.setDescricao(produtoDTO.getDescricao());
-        produto.setFornecedor(produtoDTO.getFornecedor());
-        produto.setPreco(produtoDTO.getPreco());
-        produto.setId(produtoDTO.getId());
-
-        return produto;
-    }
-
-    private ProdutoDTO convertProdutoToProdutoDto(Produto produto){
-        ProdutoDTO produtoDto = new ProdutoDTO();
-        produtoDto.setCodProduto(produto.getCodProduto());
-        produtoDto.setDescricao(produto.getDescricao());
-        produtoDto.setFornecedor(produto.getFornecedor());
-        produtoDto.setPreco(produto.getPreco());
-        produtoDto.setId(produto.getId());
-
-        return produtoDto;
-    }
 }
 

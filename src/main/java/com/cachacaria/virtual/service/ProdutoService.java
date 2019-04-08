@@ -1,7 +1,9 @@
 package com.cachacaria.virtual.service;
+import com.cachacaria.virtual.dto.ProdutoDTO;
 import com.cachacaria.virtual.entity.Produto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.validation.BindingResult;
 
 import java.util.Optional;
 
@@ -22,5 +24,7 @@ public interface ProdutoService {
         Optional<Produto> findByCodProduto(String codProduto);
 
         Long countByFornecedor(Long idFornecedor);
+
+        void validarProduto(ProdutoDTO produtoDTO, BindingResult result);
 
 }

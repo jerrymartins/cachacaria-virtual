@@ -1,5 +1,6 @@
 package com.cachacaria.virtual.service.impl;
 
+import com.cachacaria.virtual.dto.ProdutoDTO;
 import com.cachacaria.virtual.entity.Produto;
 import com.cachacaria.virtual.repository.ProdutoRepository;
 import com.cachacaria.virtual.service.ProdutoService;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
 import java.util.Optional;
 
@@ -16,7 +19,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     @Autowired
     private ProdutoRepository repository;
 
-    public Produto save(Produto produto){
+    public Produto save(Produto produto) {
         return repository.save(produto);
     }
 
@@ -36,7 +39,7 @@ public class ProdutoServiceImpl implements ProdutoService {
         return repository.findByCodProduto(cod);
     }
 
-    public Optional<Produto> findById(Long produtoId){
+    public Optional<Produto> findById(Long produtoId) {
         return repository.findById(produtoId);
     }
 
@@ -44,7 +47,19 @@ public class ProdutoServiceImpl implements ProdutoService {
         return repository.findByCodProduto(codProduto);
     }
 
-    public Long countByFornecedor(Long idFornecedor){
+    public Long countByFornecedor(Long idFornecedor) {
         return this.repository.countByFornecedorId(idFornecedor);
+    }
+
+    public void validarProduto(ProdutoDTO produtoDTO, BindingResult result) {
+        if (produtoDTO.getCodProduto() == null) {
+            result.addError(new ObjectError("produto", "Produto não informado."));
+            return;
+        }
+
+        Optional<Produto> produto = findById(produtoDTO.getId());
+        if (!produto.isPresent()) {
+            result.addError(new ObjectError("produto", "Produto não encontrado. ID inexistente."));
+        }
     }
 }

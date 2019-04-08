@@ -1,12 +1,10 @@
 package com.cachacaria.virtual.controller;
 
-import com.cachacaria.virtual.api.client.CepService;
-import com.cachacaria.virtual.api.client.impl.CepServiceRest;
-import com.cachacaria.virtual.api.data.CepResponse;
 import com.cachacaria.virtual.entity.Fornecedor;
 import com.cachacaria.virtual.dto.FornecedorDTO;
 import com.cachacaria.virtual.response.Response;
 import com.cachacaria.virtual.service.FornecedorService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -35,15 +33,17 @@ public class FornecedorController {
     @Autowired
     private FornecedorService service;
 
+    private ModelMapper modelMapper = new ModelMapper();
+
     public FornecedorController(){}
 
     @PostMapping(value = "/fornecedor")
     public ResponseEntity<Response<FornecedorDTO>> save(
             @Valid @RequestBody FornecedorDTO fornecedorDTO) throws ParseException {
         Response<FornecedorDTO> response = new Response<FornecedorDTO>();
-        Fornecedor fornecedor = convertFornecedorDtoToFornecedor(fornecedorDTO);
+        Fornecedor fornecedor = modelMapper.map(fornecedorDTO, Fornecedor.class);
         fornecedor = service.save(fornecedor);
-        response.setData(convertFornecedorToFornecedorDto(fornecedor));
+        response.setData(modelMapper.map(service.save(fornecedor), FornecedorDTO.class));
         return ResponseEntity.ok(response);
     }
 
@@ -52,7 +52,7 @@ public class FornecedorController {
         Response<FornecedorDTO> response = new Response<FornecedorDTO>();
 
         try {
-            response.setData(convertFornecedorToFornecedorDto(service.findById(fornecedorId).get()));
+            response.setData(modelMapper.map(service.findById(fornecedorId).get(), FornecedorDTO.class));
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -65,7 +65,7 @@ public class FornecedorController {
         Response<FornecedorDTO> response = new Response<FornecedorDTO>();
 
         try {
-            response.setData(convertFornecedorToFornecedorDto(service.findByCnpj(fornecedorCnpj).get()));
+            response.setData(modelMapper.map(service.findByCnpj(fornecedorCnpj).get(), FornecedorDTO.class));
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -86,9 +86,9 @@ public class FornecedorController {
     public ResponseEntity<Response<FornecedorDTO>> update(
             @Valid @RequestBody FornecedorDTO fornecedorDTO, BindingResult result) {
         Response<FornecedorDTO> response = new Response<FornecedorDTO>();
-        validarFornecedor(fornecedorDTO, result);
+        service.validarFornecedor(fornecedorDTO, result);
 
-        Fornecedor fornecedor = convertFornecedorDtoToFornecedor(fornecedorDTO);
+        Fornecedor fornecedor = modelMapper.map(fornecedorDTO, Fornecedor.class);
 
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
@@ -96,7 +96,7 @@ public class FornecedorController {
         }
 
         fornecedor = service.save(fornecedor);
-        response.setData(convertFornecedorToFornecedorDto(fornecedor));
+        response.setData(modelMapper.map(fornecedor, FornecedorDTO.class));
         return ResponseEntity.ok(response);
     }
 
@@ -108,43 +108,9 @@ public class FornecedorController {
         PageRequest pageRequest = new PageRequest(pag, qtdPorPagina, Sort.Direction.valueOf(dir), ord);
 
         Page<Fornecedor> fornecedores = service.findAll(pageRequest);
-        Page<FornecedorDTO> fornecedoresDTO = fornecedores.map(f -> this.convertFornecedorToFornecedorDto(f));
+        Page<FornecedorDTO> fornecedoresDTO = fornecedores.map(f -> modelMapper.map(f, FornecedorDTO.class));
 
         return fornecedoresDTO;
-    }
-
-    private Fornecedor convertFornecedorDtoToFornecedor(FornecedorDTO fornecedorDto) {
-        Fornecedor fornecedor = new Fornecedor();
-
-        fornecedor.setNome(fornecedorDto.getNome());
-        fornecedor.setCnpj(fornecedorDto.getCnpj());
-        fornecedor.setEmail(fornecedorDto.getEmail());
-        if (fornecedorDto.getId() != null && fornecedorDto.getId() != 0)
-            fornecedor.setId(fornecedorDto.getId());
-
-        return fornecedor;
-    }
-
-    private FornecedorDTO convertFornecedorToFornecedorDto(Fornecedor fornecedor){
-        FornecedorDTO fornecedorDTO = new FornecedorDTO();
-        fornecedorDTO.setNome(fornecedor.getNome());
-        fornecedorDTO.setCnpj(fornecedor.getCnpj());
-        fornecedorDTO.setEmail(fornecedor.getEmail());
-        fornecedorDTO.setId(fornecedor.getId());
-
-        return fornecedorDTO;
-    }
-
-    private void validarFornecedor(FornecedorDTO fornecedorDTO, BindingResult result) {
-        if (fornecedorDTO.getCnpj() == null) {
-            result.addError(new ObjectError("fornecedor", "Fornecedor não informado."));
-            return;
-        }
-
-        Optional<Fornecedor> fornecedor = service.findById(fornecedorDTO.getId());
-        if (!fornecedor.isPresent()) {
-            result.addError(new ObjectError("fornecedor", "Fornecedor não encontrado. ID inexistente."));
-        }
     }
 
 }

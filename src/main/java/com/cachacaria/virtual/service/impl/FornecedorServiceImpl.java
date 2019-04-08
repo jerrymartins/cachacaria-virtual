@@ -1,5 +1,6 @@
 package com.cachacaria.virtual.service.impl;
 
+import com.cachacaria.virtual.dto.FornecedorDTO;
 import com.cachacaria.virtual.entity.Fornecedor;
 import com.cachacaria.virtual.repository.FornecedorRepository;
 import com.cachacaria.virtual.service.FornecedorService;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
 import java.util.Optional;
 
@@ -33,5 +36,17 @@ public class FornecedorServiceImpl implements FornecedorService {
     }
 
     public Optional<Fornecedor> findById(Long fornecedorId){ return repository.findById(fornecedorId); }
+
+    public void validarFornecedor(FornecedorDTO fornecedorDTO, BindingResult result) {
+        if (fornecedorDTO.getCnpj() == null) {
+            result.addError(new ObjectError("fornecedor", "Fornecedor não informado."));
+            return;
+        }
+
+        Optional<Fornecedor> fornecedor = findById(fornecedorDTO.getId());
+        if (!fornecedor.isPresent()) {
+            result.addError(new ObjectError("fornecedor", "Fornecedor não encontrado. ID inexistente."));
+        }
+    }
 
 }
