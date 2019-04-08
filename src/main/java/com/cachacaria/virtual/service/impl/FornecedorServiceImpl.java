@@ -1,5 +1,7 @@
 package com.cachacaria.virtual.service.impl;
 
+import com.cachacaria.virtual.api.client.CepService;
+import com.cachacaria.virtual.api.data.CepResponse;
 import com.cachacaria.virtual.dto.FornecedorDTO;
 import com.cachacaria.virtual.entity.Fornecedor;
 import com.cachacaria.virtual.repository.FornecedorRepository;
@@ -18,6 +20,9 @@ public class FornecedorServiceImpl implements FornecedorService {
 
     @Autowired
     private FornecedorRepository repository;
+
+    @Autowired
+    private CepService cepService;
 
     public Optional<Fornecedor> findByCnpj(String cnpj) {
         return repository.findByCnpj(cnpj);
@@ -47,6 +52,18 @@ public class FornecedorServiceImpl implements FornecedorService {
         if (!fornecedor.isPresent()) {
             result.addError(new ObjectError("fornecedor", "Fornecedor não encontrado. ID inexistente."));
         }
+    }
+
+
+    /**
+     *
+     * @param cep
+     * @description método de teste, consumo de api com feign
+     * @return CepResponse
+     */
+    public CepResponse getDataAddress(String cep) {
+        CepResponse dataAddress = cepService.getCep(cep);
+        return dataAddress;
     }
 
 }
