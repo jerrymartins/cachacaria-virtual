@@ -1,4 +1,4 @@
-package com.cachacaria.virtual.entity;
+package com.cachacaria.virtual.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,11 +13,11 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "produtos")
+@Table(name = "products")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Produto implements Serializable {
+public class Product implements Serializable {
 
     private static final long serialVersionUID = -9017650847571487336L;
 
@@ -28,20 +27,20 @@ public class Produto implements Serializable {
 
     @Column
     @NotBlank
-    private String codProduto;
+    private String codProduct;
 
     @Column
     @NotBlank
     @Size(min = 1, max = 100)
-    private String descricao;
+    private String description;
 
     @Column
-    private Float preco;
+    private Float price;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Fornecedor fornecedor;
+    private Provider provider;
 }
 
 

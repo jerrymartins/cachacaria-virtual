@@ -1,6 +1,6 @@
 package com.cachacaria.virtual.repository;
 
-import com.cachacaria.virtual.entity.Fornecedor;
+import com.cachacaria.virtual.domain.Provider;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Repository
-public interface FornecedorRepository extends JpaRepository<Fornecedor, Long> {
+public interface ProviderRepository extends JpaRepository<Provider, Long> {
     @Transactional(readOnly = true)
-    Optional<Fornecedor> findByCnpj(String cnpj);
+    Optional<Provider> findByCnpj(String cnpj);
 }

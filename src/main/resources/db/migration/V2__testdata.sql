@@ -1,4 +1,4 @@
-insert into fornecedores(nome, cnpj, email) values
+insert into providers(name, cnpj, email) values
 ("Catuaba Ltd", "44588796558", "comercial@catuaba.com"),
 ("Ambev","45874569874569", "vendas@ambev.com.br"),
 ("Coca-Cola","45632147896541", "comercial@coca-cola.com"),
@@ -6,7 +6,7 @@ insert into fornecedores(nome, cnpj, email) values
 ("Rio Negro Ltd","45879655574545", "vendas@rionegro.com"),
 ("Corona Ltda","88855566998742", "vendas@corona.com");
 
-insert into produtos(cod_produto, descricao, preco, fornecedor_id) values
+insert into products(cod_product, description, price, provider_id) values
 ("ksp89", "Longneek Heineken", 7.99, 1),
 ("lkq58", "Itaipava 600 ml", 6.00, 2),
 ("qas76", "Itaipava LItrão", 10.00, 2),

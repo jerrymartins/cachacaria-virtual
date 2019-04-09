@@ -1,4 +1,4 @@
-package com.cachacaria.virtual.entity;
+package com.cachacaria.virtual.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +14,8 @@ import java.util.Set;
 
 @Entity
 @Getter @Setter @NoArgsConstructor
-@Table(name = "fornecedores")
-public class Fornecedor implements Serializable {
+@Table(name = "providers")
+public class Provider implements Serializable {
 
     private static final long serialVersionUID = -2543425088717298236L;
 
@@ -26,7 +26,7 @@ public class Fornecedor implements Serializable {
     @NotBlank
     @Column
     @Size(min = 1, max = 100)
-    private String nome;
+    private String name;
 
     @NotBlank
     @Column(unique = true)
@@ -35,7 +35,11 @@ public class Fornecedor implements Serializable {
     @Column
     private String email;
 
-    @OneToMany(mappedBy="fornecedor", cascade= CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy="provider", cascade= CascadeType.ALL, orphanRemoval=true)
     @Nullable
-    private Set<Produto> produtos = new HashSet<>();
+    private Set<Product> products = new HashSet<>();
+
+    @OneToMany(mappedBy="provider", cascade= CascadeType.ALL, orphanRemoval=true)
+    @Nullable
+    private Set<Address> adresses = new HashSet<>();
 }

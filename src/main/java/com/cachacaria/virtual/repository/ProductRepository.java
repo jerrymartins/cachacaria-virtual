@@ -1,6 +1,6 @@
 package com.cachacaria.virtual.repository;
 
-import com.cachacaria.virtual.entity.Produto;
+import com.cachacaria.virtual.domain.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,22 +11,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Repository
-public interface ProdutoRepository extends JpaRepository<Produto, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Transactional(readOnly = true)
-    Optional<Produto> findByCodProduto(String codProduto);
-
-    @Transactional(readOnly = true)
-    @Query(
-            value = "SELECT * FROM produtos p WHERE p.fornecedor_id = ?1",
-            nativeQuery = true)
-    Page<Produto> findByFornecedorId(Long fornecedorId, PageRequest pageRequest);
+    Optional<Product> findByCodProduct(String codProduct);
 
     @Transactional(readOnly = true)
     @Query(
-            value = "SELECT count(p.fornecedor_id) FROM produtos p WHERE p.fornecedor_id = ?1",
+            value = "SELECT * FROM products p WHERE p.provider_id = ?1",
             nativeQuery = true)
-    Long countByFornecedorId(Long fornecedorId);
+    Page<Product> findByProviderId(Long providerId, PageRequest pageRequest);
+
+    @Transactional(readOnly = true)
+    @Query(
+            value = "SELECT count(p.provider_id) FROM products p WHERE p.provider_id = ?1",
+            nativeQuery = true)
+    Long countByProviderId(Long providerId);
 
 
 }
